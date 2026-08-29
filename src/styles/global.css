@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.frame-shadow {
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.06),
+    0 12px 40px rgba(26, 26, 26, 0.08);
+}
+
+.mat-pad {
+  padding: 0.65rem;
+  background: #fff;
+}

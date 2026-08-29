@@ -1,0 +1,17 @@
+---
+import Gallery from "../../layouts/Gallery.astro";
+import site from "../../site.config";
+---
+<Gallery title="Kontakt" description="Napisz do galerii">
+  <main class="mx-auto max-w-xl px-4 py-12">
+    <h1 class="font-display text-4xl font-semibold">Kontakt</h1>
+    <p class="mt-4 text-hush">{site.address}</p>
+    <p class="mt-2"><a class="text-ochre underline" href={`mailto:${site.email}`}>{site.email}</a></p>
+    <form class="mt-8 space-y-4" method="post" action={`mailto:${site.email}`}>
+      <input class="w-full border border-frame/20 bg-mat px-4 py-3" name="name" placeholder="Imię" required />
+      <input class="w-full border border-frame/20 bg-mat px-4 py-3" type="email" name="email" placeholder="E-mail" required />
+      <textarea class="w-full border border-frame/20 bg-mat px-4 py-3" name="message" rows="5" placeholder="Wiadomość" required></textarea>
+      <button class="bg-frame px-6 py-3 text-xs font-semibold uppercase tracking-wider text-wall hover:bg-ochre" type="submit">Wyślij</button>
+    </form>
+  </main>
+</Gallery>

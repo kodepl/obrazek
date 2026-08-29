@@ -1,0 +1,62 @@
+---
+import Gallery from "../layouts/Gallery.astro";
+import { getCollection } from "astro:content";
+import site, { coverFor, roomSlug } from "../site.config";
+
+const posts = (await getCollection("obrazy")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const featured = posts[0];
+const grid = posts.slice(1);
+---
+<Gallery title={site.name} description={site.tagline} image={site.heroImage}>
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    {featured && (
+      <section class="mb-14">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.25em] text-ochre">Obraz dnia</p>
+        <div class="mt-4 grid gap-8 lg:grid-cols-12 lg:items-center">
+          <a href={`/obrazy/${featured.slug}/`} class="frame-shadow mat-pad lg:col-span-7">
+            <img
+              src={coverFor(featured.data.category, featured.data.image)}
+              alt=""
+              class="aspect-wide w-full object-cover"
+            />
+          </a>
+          <div class="lg:col-span-5">
+            <p class="text-xs uppercase tracking-widest text-hush">{featured.data.category}</p>
+            <h1 class="mt-2 font-display text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+              <a href={`/obrazy/${featured.slug}/`} class="hover:text-ochre">{featured.data.title}</a>
+            </h1>
+            <p class="mt-4 text-lg leading-relaxed text-hush">{featured.data.description}</p>
+            <a href={`/obrazy/${featured.slug}/`} class="mt-6 inline-block text-sm font-semibold uppercase tracking-wider text-ochre hover:underline">Otwórz tekst →</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <nav class="mb-10 flex flex-wrap gap-2 border-y border-frame/10 py-4">
+      {site.rooms.map((r) => (
+        <a href={`/sale/${roomSlug(r.name)}/`} class="border border-frame/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider hover:border-frame hover:bg-frame hover:text-wall">{r.name}</a>
+      ))}
+    </nav>
+
+    <section class="columns-1 gap-8 sm:columns-2 lg:columns-3">
+      {grid.map((post, i) => (
+        <article class={`mb-8 break-inside-avoid ${i % 3 === 1 ? "" : ""}`}>
+          <a href={`/obrazy/${post.slug}/`} class="frame-shadow mat-pad block transition hover:-translate-y-0.5">
+            <img
+              src={coverFor(post.data.category, post.data.image)}
+              alt=""
+              class={`w-full object-cover ${i % 5 === 0 ? "aspect-frame" : i % 5 === 2 ? "aspect-square" : "aspect-wide"}`}
+            />
+          </a>
+          <p class="mt-3 text-[11px] uppercase tracking-widest text-hush">{post.data.category}</p>
+          <h2 class="mt-1 font-display text-xl font-semibold leading-snug">
+            <a href={`/obrazy/${post.slug}/`} class="hover:text-ochre">{post.data.title}</a>
+          </h2>
+          <p class="mt-2 line-clamp-2 text-sm text-hush">{post.data.description}</p>
+        </article>
+      ))}
+    </section>
+  </main>
+</Gallery>

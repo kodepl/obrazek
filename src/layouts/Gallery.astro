@@ -1,0 +1,70 @@
+---
+import "../styles/global.css";
+import site, { roomSlug } from "../site.config";
+const { title, description = site.tagline, image = site.heroImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <script is:inline>if(location.hostname.indexOf("www.")!==0 && location.hostname.endsWith("obrazek.info")){location.replace(location.href.replace("://","://www."));}</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {site.name}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={`${title} · ${site.name}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:locale" content="pl_PL" />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-wall font-body text-slateink antialiased">
+    <header class="border-b border-frame/10 bg-wall/90 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-4 px-4 py-6">
+        <a href="/" class="group">
+          <p class="text-[11px] font-medium uppercase tracking-[0.28em] text-ochre">galeria tekstów</p>
+          <p class="font-display text-4xl font-semibold tracking-tight text-frame md:text-5xl">{site.name}</p>
+          <p class="mt-1 max-w-md text-sm text-hush">{site.tagline}</p>
+        </a>
+        <nav class="flex flex-wrap gap-1 text-sm font-medium">
+          <a href="/" class="rounded px-3 py-2 hover:bg-frame/5">Wystawa</a>
+          <a href="/obrazy/" class="rounded px-3 py-2 hover:bg-frame/5">Katalog</a>
+          <a href="/sale/" class="rounded px-3 py-2 hover:bg-frame/5">Sale</a>
+          <a href="/o-galerii/" class="rounded px-3 py-2 hover:bg-frame/5">O galerii</a>
+          <a href="/kontakt/" class="rounded px-3 py-2 hover:bg-frame/5">Kontakt</a>
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="mt-20 border-t border-frame/15 bg-frame text-wall">
+      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-3">
+        <div>
+          <p class="font-display text-2xl">{site.name}</p>
+          <p class="mt-2 text-sm text-wall/70">{site.address}</p>
+          <p class="mt-1 text-sm"><a class="underline hover:text-ochre" href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.2em] text-ochre">Sale</p>
+          <ul class="mt-3 space-y-1 text-sm">
+            {site.rooms.map((r) => (
+              <li><a class="hover:text-ochre" href={`/sale/${roomSlug(r.name)}/`}>{r.name}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div class="text-sm text-wall/70">
+          <p>Nie jesteśmy sklepem z plakatami. Publikujemy teksty o patrzeniu — na zdjęcia, obrazy i to, co dzieje się między kadrami.</p>
+          <p class="mt-4"><a href="/polityka-prywatnosci/" class="underline hover:text-ochre">Prywatność</a> · <a href="/regulamin/" class="underline hover:text-ochre">Regulamin</a></p>
+          <p class="mt-2">© {new Date().getFullYear()} {site.name}</p>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"PLACEHOLDER_ANALYTICS"}'></script>
+  </body>
+</html>
