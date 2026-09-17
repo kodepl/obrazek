@@ -1,0 +1,51 @@
+---
+import Gallery from "../../layouts/Gallery.astro";
+import { getCollection } from "astro:content";
+import { coverFor } from "../../site.config";
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const posts = (await getCollection("obrazy")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+  return paginate(posts, { pageSize: 9 });
+}
+
+const { page } = Astro.props;
+---
+<Gallery title="Katalog" description="Wszystkie teksty galerii Obrazek">
+  <main class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="font-display text-4xl font-semibold">Katalog</h1>
+    <ol class="mt-10 space-y-8">
+      {page.data.map((post, i) => (
+        <li class="flex gap-5 border-b border-frame/10 pb-6">
+          <span class="font-display text-2xl text-ochre">{String((page.currentPage - 1) * page.size + i + 1).padStart(2, "0")}</span>
+          <a href={`/obrazy/${post.slug}/`} class="frame-shadow mat-pad shrink-0">
+            <img src={coverFor(post.data.category, post.data.image)} alt="" class="h-20 w-16 object-cover" />
+          </a>
+          <div>
+            <p class="text-[11px] uppercase tracking-widest text-hush">{post.data.category}</p>
+            <a href={`/obrazy/${post.slug}/`} class="font-display text-2xl font-semibold hover:text-ochre">{post.data.title}</a>
+            <p class="mt-1 text-sm text-hush">{post.data.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </main>
+
+  {page.lastPage > 1 && (
+    <nav class="mt-12 flex flex-wrap items-center justify-center gap-3 text-sm" aria-label="Paginacja">
+      {page.url.prev ? (
+        <a href={page.url.prev} class="underline-offset-2 hover:underline">← Nowsze</a>
+      ) : (
+        <span class="opacity-40">← Nowsze</span>
+      )}
+      <span class="tabular-nums opacity-70">{page.currentPage} / {page.lastPage}</span>
+      {page.url.next ? (
+        <a href={page.url.next} class="underline-offset-2 hover:underline">Starsze →</a>
+      ) : (
+        <span class="opacity-40">Starsze →</span>
+      )}
+    </nav>
+  )}
+
+</Gallery>
