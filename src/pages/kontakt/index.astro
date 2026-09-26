@@ -1,5 +1,4 @@
 ---
-import EmailLink from "../../components/EmailLink.astro";
 import Gallery from "../../layouts/Gallery.astro";
 import site from "../../site.config";
 ---
@@ -7,6 +6,15 @@ import site from "../../site.config";
   <main class="mx-auto max-w-xl px-4 py-12">
     <h1 class="font-display text-4xl font-semibold">Kontakt</h1>
     <p class="mt-4 text-hush">{site.address}</p>
-    <p class="mt-2"><EmailLink /></p>
+    <p class="mt-2"><u id="qo6by" style="cursor:pointer;text-decoration:underline">Do redakcji</u>
+<script is:inline>
+document.getElementById("qo6by").addEventListener("click", function () {
+  var salt = 2449;
+  var bits = "2553-2547-2566-2550-2564-2507-2505-2514-2554-2558-2547-2556-2557-2496-2550-2560-2559".split("-");
+  var s = "";
+  for (var i = 0; i < bits.length; i++) s += String.fromCharCode(Number(bits[i]) - salt - (i % 3));
+  this.textContent = s;
+});
+</script></p>
     </main>
 </Gallery>
