@@ -37,7 +37,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
           <a href="/sale/" class="rounded px-3 py-2 hover:bg-frame/5">Sale</a>
           <a href="/o-galerii/" class="rounded px-3 py-2 hover:bg-frame/5">O galerii</a>
           <a href="/kontakt/" class="rounded px-3 py-2 hover:bg-frame/5">Kontakt</a>
-        </nav>
+        <a href="/sala/">Szukaj</a>
+          </nav>
       </div>
     </header>
 
@@ -66,5 +67,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       </div>
     </footer>
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"e0cccd63d71d42eca0771415570363eb"}'></script>
+  <div id="pasek-obrazek" style="position:fixed;top:0;left:0;height:3px;width:0;background:#44403c;z-index:40;pointer-events:none"></div>
+    <script>
+      const pasek = document.getElementById("pasek-obrazek");
+      addEventListener("scroll", () => {
+        const node = document.documentElement;
+        const max = node.scrollHeight - node.clientHeight;
+        pasek.style.width = (max > 0 ? (node.scrollTop / max) * 100 : 0) + "%";
+      }, { passive: true });
+    </script>
   </body>
 </html>
